@@ -1,0 +1,301 @@
+---
+title: "Canada - THE DREAM DESTINY OF MIGRANTS SUFFERS-Inflation in Housing"
+author: "A.Mayuri(2348133)"
+date: "2023-09-24"
+output:
+  word_document: default
+  html_document: default
+---
+
+# CASE STUDY :
+
+Canada the most promising dream of migrants over the decades currently undergoing the most tragic financial instability. This is due to the high inflation that is sky-rocketing the daily commodities and specifically the housing rents of the denizens.
+
+## INTRODUCTION:
+
+Canada has always aimed to be immigrant friendly country. specifically the country has been a safe heaven for migrants who have suffered with wars,forced migration etc. It has played a significant part in changing the lives of migrants and skilled laborers.
+However over the years, the situation has been changing due to the inflation, which is questioning the choices made by the migrants and the validity of these friendly public policies.
+
+
+## CAUSES FOR THE CRISIS:
+
+##### High Migration rate: 
+The annual immigration in Canada amounts to around 500,000 which is the highest rates per population of any country in the world. and almost 7.5 million immigrants live in Canada as permanent citizens. These statistics reveal the intensity of migration inflow that is practiced by the Canadian nation. 
+
+##### Lack of Infrastructure: 
+The high demand for housing due to the tremendous inflow of migrants over the year does not match with the houses that are built. thus accommodation is demanded commodity. 
+This leads to a surge in demand for rental houses while the supply is closed to be fixed thus resulting in the housing inflation.
+
+##### Investment Pattern:
+more in houses than in business
+rely on natural resources which is sold more over 55% to the USA, strict laws make it harder Canadian start ups to raise resources to build businesses. Thus small start-ups get absorbed/brought by the USA richer counterparts.This makes Canada a very dependent economy on the USA
+
+
+## OBJECTIVE:
+
+1)Descriptive Data Analysis
+
+2)Stratified Sampling
+
+
+## VARIABLE OF INTEREST:
+
+1) Year (1990/2016)-Time period
+(used to segregate the data set into different stratum)
+
+2) region - The different districts/county that are considered for the data collection/census.
+
+3)one_/two_/three_bedrooms(rent): The payment that is been charged to temporarily stay at an accommodation of 1/2/3 BHK apartment. the rent are charged at an monthly basis and are collected in Canadian dollars.
+
+
+## DEFINITIONS:
+
+Inflation: It is when prices for goods and services rise and purchasing power falls.
+
+When inflation goes up, people and businesses have to spend more money to buy the same amount of goods and services. "more money chasing fewer goods".
+
+Migration: The temporary or permanent change of residence of a set of people/animals in search of a better living standard,or any other reason that can be caused by push or pull factors.
+
+Immigrant(s):A person(people) moving to another country by shifting his/her residence
+
+## METHODOLOGY:
+
+The project has followed a quantitative approach to understand the hike in rents of the Canadian housing.
+The project has utilized sources such as a secondary data set delivered by the Kaggle website for analysis, and  research papers, books, past case studies, examples to understand the background and history of today situation.
+ 
+#### SAMPLING TECHNIQUE: We have used stratified sampling technique where we aim to segregate the dataset into different stratums or subsets.
+
+##### STRATUM SELECTION:
+
+Stratum segregate the whole population set by being heterogeneous between and homogeneous within.
+
+For our study we have chosen 1990 and 2016 data as two stratum since the price index and inflation will constant in those years but are different for the two years given the duration difference.
+
+## FORMULA:
+
+## ANALYSIS:
+
+### STEP1: IMPORTING DATASETS
+```{r }
+library(readxl)
+PROJECT_1990 <- read_excel("C:/Users/mayur/Desktop/Mstat/tri sem 1/R/dataset/PROJECT_1990.xlsx")
+View(PROJECT_1990)
+attach(PROJECT_1990)
+
+library(readxl)
+PROJECT_2016 <- read_excel("C:/Users/mayur/Desktop/Mstat/tri sem 1/R/dataset/PROJECT_2016.xlsx")
+View(PROJECT_2016)
+attach(PROJECT_2016)
+
+ library(readxl)
+ PROJECT <- read_excel("C:/Users/mayur/Desktop/Mstat/tri sem 1/R/dataset/PROJECT.xlsx")
+ View(PROJECT)
+ attach(PROJECT)
+```
+
+### Step 2: DESCRIPTIVE DATA ANALYSIS
+
+Let us try to understand the average(mean) rent for different sized houses over the two years. And we understand that the grouped bar graphs give the best depiction for the illustration of the same.
+```{r }
+#mean for 1990 is in series of x
+#mean for 2016 is in series of y
+
+x1=mean(PROJECT_1990$one_bedroom)
+x2=mean(PROJECT_1990$two_bedroom)
+x3=mean(PROJECT_1990$three_bedroom)
+
+y1=mean(PROJECT_2016$one_bedroom)
+y2=mean(PROJECT_2016$two_bedroom)
+y3=mean(PROJECT_2016$three_bedroom)
+c1=c(x1,x2,x3)
+c2=c(y1,y2,y3)
+#Creating data-frame to do grouped bar graph
+
+df <- data.frame(Year=rep(c('1990', '2016'), each=3),
+                 BHK=rep(c('ONE-BHK', 'TWO-BHK', 'THREE-BHK'), times=2),
+                 Mean_Rent=c(x1,x2,x3,y1,y2,y3))
+df
+
+library(ggplot2)
+
+
+ggplot(df, aes(fill=BHK, y=Mean_Rent, x=Year)) + 
+  geom_bar(position='dodge', stat='identity') +
+  theme_minimal() + 
+  labs(x='Year', y='Mean Rent', title='Average Rent for 1/2/3 BHK') +
+  theme(plot.title = element_text(hjust=0.5, size=20, face='bold')) +
+  scale_fill_manual('Position', values=c('coral2', 'steelblue', 'pink'))
+```
+##### Interpretation of the graph:
+We observe that the rent of 1/2/3BHK houses have raised far above over the years.Let us examine the same in much more specifics in the following analysis
+
+## STRATIFIED DATA ANALYSIS:
+
+### STEP3 : INITIALIZATION
+```{r }
+library(samplingbook)
+attach(PROJECT)
+```
+
+
+### STEP4 : CREATING STRATUMS
+
+For the stratum we have considered year 1990 as '0' and year 2016 as '1'
+```{r }
+#obtaining stratum size and stratum standard deviation (N1,N2,S1,S2)
+stratum1=PROJECT[PROJECT$year==0, ]
+stratum1 #creating stratum 1 for year 1990
+stratum2=PROJECT[PROJECT$year==1, ]
+stratum2 #creating stratum 1 for year 2016
+
+# Finding the number of observation for each stratum
+N1=sum(stratum1$year==0)
+N1 
+N2=sum(stratum2$year==1)
+N2
+
+# Finding the mean
+MN_1B_1990=mean(stratum1$one_bedroom)
+MN_2B_1990=mean(stratum1$two_bedroom)
+MN_3B_1990=mean(stratum1$three_bedroom)
+
+MN_1B_2016=mean(stratum2$one_bedroom)
+MN_2B_2016=mean(stratum2$two_bedroom)
+MN_3B_2016=mean(stratum2$three_bedroom)
+
+MN_1B_1990
+MN_2B_1990
+MN_3B_1990
+
+MN_1B_2016
+MN_2B_2016
+MN_3B_2016
+
+# Finding the standard deviations
+SD_1B_1990=sqrt(var(stratum1$one_bedroom))
+SD_2B_1990=sqrt(var(stratum1$two_bedroom))
+SD_3B_1990=sqrt(var(stratum1$three_bedroom))
+
+SD_1B_2016=sqrt(var(stratum2$one_bedroom))
+SD_2B_2016=sqrt(var(stratum2$two_bedroom))
+SD_3B_2016=sqrt(var(stratum2$three_bedroom))
+
+SD_1B_1990
+SD_2B_1990
+SD_3B_1990
+
+SD_1B_2016
+SD_2B_2016
+SD_3B_2016
+```
+
+
+### STEP5 : USING OPTIMIMUM ('OPT') FOR SELECTING THE SAMPLES.
+
+```{r }
+#let the sample of size n=10 has to be drawn using proportional allocation
+sample_size=stratasamp(n=10, Nh=c(N1, N2), Sh=c(SD_1B_1990, SD_1B_2016), type="opt")
+sample_size
+stratasize(e=.1, Nh=c(N1, N2), Sh=c(SD_1B_1990, SD_1B_2016), type="opt" )
+```
+
+
+### STEP6: DETERMINING SAMPLE SIZE OF 7 FROM BOTH STRATUMS
+
+
+```{r }
+#collect a random sample of size 5,5 from both strata
+sample1=stratum1[sample(1:nrow(stratum1), 7, replace=FALSE), ]
+sample1 # sample 1 collected from stratum 1
+
+sample2=stratum2[sample(1:nrow(stratum2), 7, replace=FALSE), ]
+sample2 # sample 1 collected from stratum 2
+```
+
+###STEP7 : BINDING THE SAMPLES TOGETHER
+
+```{r }
+total_sampled_data=rbind(sample1, sample2)
+total_sampled_data # total sample collected using stratified random sampling
+```
+
+
+
+
+```{r }
+# Estimation of population mean using stratified random sample
+nh=as.vector(table(total_sampled_data$year))
+nh
+wh=nh/sum(nh)
+wh
+```
+
+```{r }
+#calculating strata means for all three forms of houses
+ST_mean_1B=stratamean(y=total_sampled_data$one_bedroom, h=as.vector(total_sampled_data$year),
+wh=wh, eae=TRUE)
+ST_mean_1B   #1bhk
+
+ST_mean_2B=stratamean(y=total_sampled_data$two_bedroom, h=as.vector(total_sampled_data$year),
+wh=wh, eae=TRUE)
+ST_mean_2B   #2bhk
+
+ST_mean_3B=stratamean(y=total_sampled_data$three_bedroom, h=as.vector(total_sampled_data$year),
+wh=wh, eae=TRUE)
+ST_mean_3B  #3bhk
+
+stratamean(y=total_sampled_data$one_bedroom, h=as.vector(total_sampled_data$year),
+wh=wh)
+
+stratamean(y=total_sampled_data$two_bedroom, h=as.vector(total_sampled_data$year),
+wh=wh)
+
+stratamean(y=total_sampled_data$three_bedroom, h=as.vector(total_sampled_data$year),
+wh=wh)
+```
+Interpretation :
+
+
+
+```{r }
+
+```
+
+## CONCLUSION :
+
+
+
+
+
+
+
+## FUTURE SCOPE AND PROSPECTIVE ANALYSIS USING THE DATASET :
+
+-Time series analysis:
+We have considered only two year data set since we are doing a stratified sampling however we can do a time series analysis if we had to understand the trend of increase over the years.
+
+-Simulation:
+We can do a simulation using the historical data set, adjust it to current inflation to predict how the trend might look at the future. However it is to note that simulation will give all possibilities with different changes but not the exact truth of the future nor the optimal solution.
+
+
+## REFORMS/SUGGESTIONS FOR THE CANADIAN INFLATION:
+
+The government and Banks are a pivot players in maintaining the  
+
+
+
+## REFERENCE :
+
+https://livingcost.org/cost/canada#:~:text=The%20cost%20of%20living%20in%20Canada%20is%20%241901%2C,enough%20to%20cover%20living%20expenses%20for%201.7%20months.
+
+https://www.ctvnews.ca/canada/millions-of-people-will-move-to-canada-in-the-next-20-years-but-where-will-they-live-1.5464205
+
+https://cbc.ca/news/business/canada-inflation-rate-1.6526060
+
+https://www.cbc.ca/news/politics/inflation-political-parties-solutions-1.6586736
+
+https://globalnews.ca/news/9970539/canada-inflation-august-2023/
+
+https://www.bankofcanada.ca/2023/03/understanding-the-reasons-for-high-inflation/
+
+https://www.statista.com/topics/2917/immigration-in-canada/#topicOverview
